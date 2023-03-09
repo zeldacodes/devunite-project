@@ -1,7 +1,7 @@
 {
-  "name": "fs-app-template",
+  "name": "devunite-project",
   "version": "2.0.0",
-  "description": "Some boilerplate code to get you started - get shakin'!",
+  "description": "A platform for web developers to find other web developers to connect with to build apps/projects",
   "main": "index.js",
   "scripts": {
     "build": "webpack",

@@ -5,6 +5,7 @@ import AuthForm from "../features/auth/AuthForm";
 import Home from "../features/home/Home";
 import { me } from "./store";
 import UserList from "../features/users/userList/UserList";
+import SingleUser from "../features/users/singleUser/SingleUser";
 
 /**
  * COMPONENT
@@ -40,6 +41,7 @@ const AppRoutes = () => {
             element={<AuthForm name="signup" displayName="Sign Up" />}
           />
           <Route path="/users" element={<UserList />} />
+          <Route path="/users/:userId" element={<SingleUser />} />
         </Routes>
       )}
     </div>

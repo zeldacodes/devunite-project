@@ -1,6 +1,6 @@
 const {
   models: { User },
-} = require("../db");
+} = require("../../db");
 
 const registerUser = async (req, res) => {
   try {
@@ -101,7 +101,6 @@ const getUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const userId = req.payload.id;
-    console.log("------->", userId);
     const { skills, bio } = req.body;
     const singleUser = await User.findOne({
       where: { id: userId },

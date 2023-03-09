@@ -19,6 +19,7 @@ const User = db.define("user", {
   },
   password: {
     type: Sequelize.STRING,
+    allowNull: false,
   },
   bio: {
     type: Sequelize.TEXT,

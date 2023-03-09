@@ -26,7 +26,7 @@ const User = db.define("user", {
     allowNull: true,
   },
   skills: {
-    type: Sequelize.ARRAY,
+    type: Sequelize.TEXT,
     allowNull: true,
   },
 });

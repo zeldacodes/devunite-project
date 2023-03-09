@@ -85,13 +85,41 @@ const getUser = async (req, res) => {
       attributes: { exclude: ["password"] },
     });
     if (!singleUser) {
-      return res
-        .status(404)
-        .json({ message: "User not found - Please register" });
+      return res.status(404).json({ message: "User not found" });
     }
     return res.status(200).json({
       message: "User found",
       user: singleUser,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
+};
+
+const updateUser = async (req, res) => {
+  try {
+    const userId = req.payload.id;
+    console.log("------->", userId);
+    const { skills, bio } = req.body;
+    const singleUser = await User.findOne({
+      where: { id: userId },
+    });
+    if (!singleUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const updatedUser = await singleUser.update(
+      { skills, bio },
+      { where: { id: userId } }
+    );
+    const newlyUpdatedUser = await User.findOne({
+      where: { id: updatedUser.id },
+      attributes: { exclude: ["password"] },
+    });
+    return res.status(200).json({
+      message: "User profile updated successfully",
+      user: newlyUpdatedUser,
     });
   } catch (error) {
     return res
@@ -105,4 +133,5 @@ module.exports = {
   loginUser,
   getAllUsers,
   getUser,
+  updateUser,
 };

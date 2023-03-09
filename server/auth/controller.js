@@ -2,7 +2,7 @@ const {
   models: { User },
 } = require("../db");
 
-const createUser = async (req, res) => {
+const registerUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
     if (!username || !email || !password) {
@@ -18,7 +18,11 @@ const createUser = async (req, res) => {
       where: { email: newUser.email },
       attributes: { exclude: ["password"] },
     });
-    return res.status(201).json({ user: newlyCreatedUser, token });
+    return res.status(201).json({
+      message: "User registered successfully",
+      user: newlyCreatedUser,
+      token,
+    });
   } catch (error) {
     return res
       .status(500)
@@ -26,11 +30,79 @@ const createUser = async (req, res) => {
   }
 };
 
-// const loginUser = async (req, res) => {
-//   try {
-//   } catch (error) {}
-// };
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ message: "Please fill out all fields" });
+    }
+    const foundUser = await User.findOne({
+      where: { email: email },
+    });
+    if (!foundUser) {
+      return res
+        .status(404)
+        .json({ message: "User not found - Please register" });
+    }
+    const checkPassword = await foundUser.correctPassword(password);
+    if (!checkPassword) {
+      return res.status(401).json({ message: "Incorrect login credentials" });
+    }
+    const token = await foundUser.generateToken();
+    return res.status(200).json({
+      message: "Login successful",
+      username: foundUser.username,
+      token,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
+};
+
+const getAllUsers = async (req, res) => {
+  try {
+    const allUsers = await User.findAll({
+      attributes: { exclude: ["password"] },
+    });
+    if (allUsers.length === 0) {
+      return res.status(404).json({ message: "No users found" });
+    }
+    return res.status(200).json({ message: "Users found", users: allUsers });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
+};
+
+const getUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const singleUser = await User.findOne({
+      where: { id },
+      attributes: { exclude: ["password"] },
+    });
+    if (!singleUser) {
+      return res
+        .status(404)
+        .json({ message: "User not found - Please register" });
+    }
+    return res.status(200).json({
+      message: "User found",
+      user: singleUser,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
+};
 
 module.exports = {
-  createUser,
+  registerUser,
+  loginUser,
+  getAllUsers,
+  getUser,
 };

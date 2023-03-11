@@ -9,6 +9,20 @@ const TOKEN = "token";
 /*
   THUNKS
 */
+
+export const loginUser = createAsyncThunk(
+  "auth/loginUser",
+  async ({ email, password }) => {
+    try {
+      const res = await axios.post("/api/users/login", { email, password });
+      console.log("res.data", res.data);
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
 export const me = createAsyncThunk("auth/me", async () => {
   const token = window.localStorage.getItem(TOKEN);
   try {
@@ -66,6 +80,21 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(loginUser.pending, (state) => {
+      state.status = "loading";
+      state.error = null;
+    });
+
+    builder.addCase(loginUser.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      state.user = { ...state.user, ...action.payload };
+    });
+
+    builder.addCase(loginUser.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+    });
+
     builder.addCase(me.fulfilled, (state, action) => {
       state.me = action.payload;
     });

@@ -17,7 +17,7 @@ const Navbar = () => {
       <h1 className="title">DevUnite</h1>
       <nav>
         {isLoggedIn ? (
-          <div>
+          <div className="link-wrapper">
             {/* The navbar will show these links after you log in */}
             <Link to="/home">Home</Link>
             <Link to="/profile">Profile</Link>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchSingleUser } from "../singleUser/singleUserSlice";
+import { fetchSingleUser, followUser } from "../singleUser/singleUserSlice";
 
 const SingleUser = () => {
   const { userId } = useParams();
@@ -15,6 +15,13 @@ const SingleUser = () => {
       dispatch(fetchSingleUser(userId));
     }
   }, [status, dispatch, userId]);
+  console.log("userId ---->", userId);
+  console.log("user.id ---->", user.id);
+
+  const handleFollow = (e) => {
+    e.preventDefault();
+    dispatch(followUser(user.username));
+  };
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -27,10 +34,18 @@ const SingleUser = () => {
   if (status === "succeeded") {
     return (
       <div>
+        <img src={user.imageURL} />
         <h2>{user.username}</h2>
         <p>{user.email}</p>
         <p>{user.bio}</p>
         <p>{user.skills}</p>
+        {user.id == userId ? null : (
+          <div>
+            <button type="button" onClick={handleFollow}>
+              Follow
+            </button>
+          </div>
+        )}
       </div>
     );
   }

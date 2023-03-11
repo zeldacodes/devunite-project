@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import AuthForm from "../features/auth/AuthForm";
 import Home from "../features/home/Home";
-import { me } from "./store";
 import UserList from "../features/users/userList/UserList";
 import SingleUser from "../features/users/singleUser/SingleUser";
+import Profile from "../features/users/profile/profile";
 
 /**
  * COMPONENT
@@ -13,12 +13,6 @@ import SingleUser from "../features/users/singleUser/SingleUser";
 
 const AppRoutes = () => {
   const isLoggedIn = useSelector((state) => !!state.auth?.user?.username);
-  const dispatch = useDispatch();
-  console.log("isLoggedIn", isLoggedIn);
-
-  // useEffect(() => {
-  //   dispatch();
-  // }, []);
 
   return (
     <div>
@@ -27,13 +21,10 @@ const AppRoutes = () => {
           <Route path="/" element={<Home />} />
           <Route path="/users" element={<UserList />} />
           <Route path="/users/:userId" element={<SingleUser />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       ) : (
         <Routes>
-          {/* <Route
-            path="/*"
-            element={<AuthForm name="login" displayName="Login" />}
-          /> */}
           <Route
             path="/login"
             element={<AuthForm name="login" displayName="Login" />}

@@ -14,4 +14,6 @@ router.get("/:id", users.getUser);
 
 router.put("/", authChecker.verifyToken, users.updateUser);
 
+router.get("/my-profile/me", authChecker.verifyToken, users.getMyProfile);
+
 module.exports = router;

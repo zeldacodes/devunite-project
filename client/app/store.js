@@ -3,6 +3,7 @@ import logger from "redux-logger";
 import authReducer from "../features/auth/authSlice";
 import usersReducer from "../features/users/userList/userListSlice";
 import singleUserReducer from "../features/users/singleUser/singleUserSlice";
+import { persistMiddleware } from "./persist-middleware";
 
 const store = configureStore({
   reducer: {
@@ -10,7 +11,10 @@ const store = configureStore({
     users: usersReducer,
     singleUser: singleUserReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  middleware: (getDefaultMiddleware) => [
+    ...getDefaultMiddleware(),
+    persistMiddleware,
+  ],
 });
 
 export default store;

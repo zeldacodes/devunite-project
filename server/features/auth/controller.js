@@ -127,10 +127,29 @@ const updateUser = async (req, res) => {
   }
 };
 
+const getMyProfile = async (req, res) => {
+  try {
+    const userId = req.payload.id;
+    const foundUser = await User.findOne({
+      where: { id: userId },
+    });
+    if (!foundUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    console.log("----!", foundUser);
+    return res.status(200).json({ message: "User found", user: foundUser });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   getAllUsers,
   getUser,
   updateUser,
+  getMyProfile,
 };

@@ -12,26 +12,28 @@ import SingleUser from "../features/users/singleUser/SingleUser";
  */
 
 const AppRoutes = () => {
-  const isLoggedIn = useSelector((state) => !!state.auth.me.id);
+  const isLoggedIn = useSelector((state) => !!state.auth?.user?.username);
   const dispatch = useDispatch();
+  console.log("isLoggedIn", isLoggedIn);
 
-  useEffect(() => {
-    dispatch(me());
-  }, []);
+  // useEffect(() => {
+  //   dispatch();
+  // }, []);
 
   return (
     <div>
       {isLoggedIn ? (
         <Routes>
-          <Route path="/*" element={<Home />} />
-          <Route to="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/users" element={<UserList />} />
+          <Route path="/users/:userId" element={<SingleUser />} />
         </Routes>
       ) : (
         <Routes>
-          <Route
+          {/* <Route
             path="/*"
             element={<AuthForm name="login" displayName="Login" />}
-          />
+          /> */}
           <Route
             path="/login"
             element={<AuthForm name="login" displayName="Login" />}
@@ -40,8 +42,6 @@ const AppRoutes = () => {
             path="/signup"
             element={<AuthForm name="signup" displayName="Sign Up" />}
           />
-          <Route path="/users" element={<UserList />} />
-          <Route path="/users/:userId" element={<SingleUser />} />
         </Routes>
       )}
     </div>

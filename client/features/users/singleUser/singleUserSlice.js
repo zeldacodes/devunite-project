@@ -1,24 +1,24 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const initialState = {
-  user: {},
-  status: "idle",
-  error: null,
-};
-
 export const fetchSingleUser = createAsyncThunk(
   "singleUser/fetchSingleUser",
   async (id) => {
     try {
       const { data } = await axios.get(`/api/users/${id}`);
-      console.log("--->", data);
-      return data;
+      console.log("--->", data.user);
+      return data.user;
     } catch (error) {
       throw error;
     }
   }
 );
+
+const initialState = {
+  user: {},
+  status: "idle",
+  error: null,
+};
 
 const userSlice = createSlice({
   name: "singleUser",

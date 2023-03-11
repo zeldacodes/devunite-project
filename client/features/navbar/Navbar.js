@@ -4,12 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../app/store";
 
 const Navbar = () => {
-  const isLoggedIn = useSelector((state) => !!state.auth.me.id);
+  const isLoggedIn = useSelector((state) => !!state.auth?.user?.username);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const logoutAndRedirectHome = () => {
-    dispatch(logout());
-    navigate("/login");
+    // dispatch(logout());
+    localStorage.clear();
+    windows.location = "/login";
   };
 
   return (
@@ -22,9 +23,9 @@ const Navbar = () => {
             <Link to="/home">Home</Link>
             <Link to="/profile">Profile</Link>
             <Link to="/users">Users</Link>
-            <button type="button" onClick={logoutAndRedirectHome}>
+            <Link to="/login" onClick={logoutAndRedirectHome}>
               Logout
-            </button>
+            </Link>
           </div>
         ) : (
           <div className="link-wrapper">

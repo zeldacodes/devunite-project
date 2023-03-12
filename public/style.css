@@ -1,5 +1,6 @@
 body {
   font-family: sans-serif;
+  background-color: gray;
 }
 
 a {
@@ -29,7 +30,7 @@ form div {
 }
 
 .card {
-  background-color: pink;
+  /* background-color: pink; */
   border-radius: 10px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
   display: flex;
@@ -38,6 +39,12 @@ form div {
   margin: 20px;
   padding: 20px;
   width: 18.75rem;
+  color: pink;
+}
+
+img {
+  height: 400px;
+  width: 440px;
 }
 
 .user-image {
@@ -57,5 +64,21 @@ form div {
 }
 
 .link-wrapper a {
+  color: pink;
+}
+
+button {
+  background-color: black;
+  color: pink;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+h2,
+p,
+small,
+html {
   color: pink;
 }

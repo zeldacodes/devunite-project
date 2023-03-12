@@ -58,7 +58,7 @@ const SingleUser = () => {
         <p>{user.bio}</p>
         <p>{user.skills}</p>
         {user.id == loggedInUser.id ? null : (
-          <div>
+          <div className="follow-button">
             <button
               type="button"
               onClick={isFollowing ? handleUnFollow : handleFollow}

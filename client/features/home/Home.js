@@ -11,6 +11,12 @@ const Home = (props) => {
   return (
     <div>
       <h3>Welcome, {username}!</h3>
+      <p>
+        {" "}
+        Welcome to our web development community! This is a place where you can
+        connect with other talented developers and collaborate on exciting
+        projects together!
+      </p>
     </div>
   );
 };

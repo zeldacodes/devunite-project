@@ -52,6 +52,7 @@ const loginUser = async (req, res) => {
     return res.status(200).json({
       message: "Login successful",
       username: foundUser.username,
+      id: foundUser.id,
       token,
     });
   } catch (error) {
@@ -82,6 +83,10 @@ const getUser = async (req, res) => {
     const { id } = req.params;
     const singleUser = await User.findOne({
       where: { id },
+      include: [
+        { model: User, as: "followers" },
+        { model: User, as: "following" },
+      ],
       attributes: { exclude: ["password"] },
     });
     if (!singleUser) {

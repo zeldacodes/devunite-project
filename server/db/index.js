@@ -10,13 +10,13 @@ const Follow = require("./models/Follow");
 User.belongsToMany(User, {
   as: "followers",
   foreignKey: "userId",
-  through: "Follows",
+  through: "follows",
 });
 
 User.belongsToMany(User, {
   as: "following",
   foreignKey: "followerId",
-  through: "Follows",
+  through: "follows",
 });
 
 Follow.belongsTo(User, {

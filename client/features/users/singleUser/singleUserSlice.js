@@ -32,6 +32,22 @@ export const followUser = createAsyncThunk(
   }
 );
 
+export const unFollowUser = createAsyncThunk(
+  "singleUser/unFollowUser",
+  async (username) => {
+    try {
+      const { data } = await axios.delete(`/api/follow/${username}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return data.user;
+    } catch (error) {
+      throw error.response.data.message;
+    }
+  }
+);
+
 const initialState = {
   user: {},
   status: "idle",
@@ -63,6 +79,19 @@ const userSlice = createSlice({
       state.user = { ...state.user, ...action.payload };
     });
     builder.addCase(followUser.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+      console.log("state.error---->", state.error);
+    });
+
+    builder.addCase(unFollowUser.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(unFollowUser.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      state.user = { ...state.user, ...action.payload };
+    });
+    builder.addCase(unFollowUser.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error.message;
       console.log("state.error---->", state.error);

@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchSingleUser, followUser } from "../singleUser/singleUserSlice";
+import {
+  fetchSingleUser,
+  followUser,
+  unFollowUser,
+} from "../singleUser/singleUserSlice";
 
 const SingleUser = () => {
   const { userId } = useParams();
@@ -10,17 +14,31 @@ const SingleUser = () => {
   const status = useSelector((state) => state.singleUser.status);
   const error = useSelector((state) => state.singleUser.error);
 
+  const loggedInUser = useSelector((state) => state.auth.user);
+
+  const isFollowing = user.followers?.some(
+    (follower) => follower.id === loggedInUser.id
+  );
+
+  const [buttonText, setButtonText] = useState(
+    isFollowing ? "Unfollow" : "Follow"
+  );
+
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchSingleUser(userId));
     }
+    setButtonText(isFollowing ? "Unfollow" : "Follow");
   }, [status, dispatch, userId]);
-  console.log("userId ---->", userId);
-  console.log("user.id ---->", user.id);
 
   const handleFollow = (e) => {
     e.preventDefault();
     dispatch(followUser(user.username));
+  };
+
+  const handleUnFollow = (e) => {
+    e.preventDefault();
+    dispatch(unFollowUser(user.username));
   };
 
   if (status === "loading") {
@@ -39,10 +57,13 @@ const SingleUser = () => {
         <p>{user.email}</p>
         <p>{user.bio}</p>
         <p>{user.skills}</p>
-        {user.id == userId ? null : (
+        {user.id == loggedInUser.id ? null : (
           <div>
-            <button type="button" onClick={handleFollow}>
-              Follow
+            <button
+              type="button"
+              onClick={isFollowing ? handleUnFollow : handleFollow}
+            >
+              {buttonText}
             </button>
           </div>
         )}
